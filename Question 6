@@ -1,0 +1,30 @@
+def findAnagrams(s, p):
+    result = []
+    p_freq = {}
+    window_freq = {}
+    
+    for char in p:
+        p_freq[char] = p_freq.get(char, 0) + 1
+        
+    left, right = 0, 0
+    while right < len(s):
+        # Expand the window
+        window_freq[s[right]] = window_freq.get(s[right], 0) + 1
+        
+        if right - left + 1 == len(p):
+            # Check if the window contains an anagram
+            if window_freq == p_freq:
+                result.append(left)
+            
+            # Shrink the window
+            window_freq[s[left]] -= 1
+            if window_freq[s[left]] == 0:
+                del window_freq[s[left]]
+            left += 1
+        
+        right += 1
+    
+    return result
+s = "cbaebabacd"
+p = "abc"
+print(findAnagrams(s, p))  # Output: [0, 6]
